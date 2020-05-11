@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block container %}
+  {% if filt_tours|length == 1 %}
+    {% set tour_word = 'туров' %}
+  {% else %}
+    {% if filt_tours|length % 10 == 1 %}
+      {% set tour_word = 'тур' %}
+    {% elif filt_tours|length % 10 in range(2, 5) %}
+      {% set tour_word = 'тура' %}
+    {% else %}
+      {% set tour_word = 'туров' %}
+    {%endif %}
+  {% endif %}
+
+  <main class="container mt-3">
+    <h1 class="display-5 mt-4">Летим из {{ departure_name }}</h1>
+    <p class="mb-4">Найдено {{ filt_tours|length }} {{ tour_word }}, от {{ tours_prices|min }} до {{ tours_prices|max }} и от {{ tours_nights|min }} ночей до {{ tours_nights|max }} ночей</p>
+    <!-- CARDS -->
+    <div class="row mt-5">
+      {% for tour_id, tour_info in filt_tours.items()|sort(attribute="1.stars")|sort(attribute="1.price") %}
+      <div class="col-4">
+        <div class="card mb-4">
+          <div class="embed-responsive embed-responsive-16by9">
+            <img src="{{ tour_info.picture }}" class="card-img-top embed-responsive-item" alt="">
+          </div>
+
+          <div class="card-body">
+            <h2 class="h5 card-title">{{ tour_info.title }} {{ tour_info.stars }}★</h2>
+            <p class="card-text">{{ tour_info.description|truncate(55) }}</p>
+            <p class="card-text">{{ tour_info.date }}, {{ tour_info.nights }} ночей, {{ tour_info.price }} Р</p>
+            <a href="/tours/{{ tour_id|int }}/" class="btn btn-sm btn-primary">Подробнее</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+{% endblock %}
