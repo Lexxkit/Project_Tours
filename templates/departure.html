@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block container %}
-  {% if filt_tours|length == 1 %}
+  {% if filt_tours|length in range(5, 21) %}
     {% set tour_word = 'туров' %}
   {% else %}
     {% if filt_tours|length % 10 == 1 %}
